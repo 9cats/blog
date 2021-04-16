@@ -10,7 +10,7 @@ keywords:
 description: 测试文章
 top_img: false
 comments: true
-cover: false
+cover:
 toc: 
 toc_number: 
 copyright: 

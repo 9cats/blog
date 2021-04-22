@@ -49,10 +49,13 @@ aside:
 
 ## 1.3 提前准备
 
-+ [Hexo](https://hexo.io/zh-cn/)是一款基于 Node.js 用于快速搭建博客的框架，有了它就可以完成完成个人博客的构建，它会帮你构建博客的整个框架，你只需要会使用Markdown 写博客即可。关于Hexo的具体介绍，可以在其官方网站查看具体的说明。
++ [Hexo](https://hexo.io/zh-cn/)是一款基于 Node.js 用于快速搭建博客的框架，有了它就可以完成完成个人博客的构建，它会帮你构建博客的整个框架，你只需要会使用Markdown 写博客即可。
 + [Butterfly](https://butterfly.js.org/)Butterfly 博客主题。A Simple and Card UI Design theme for Hexo.
 + [Node.js](http://nodejs.cn/) 是一个基于Chrome V8引擎的JavaScript运行环境。安装好node.js后利用npm包管理工具来安装Hexo
-+ [Git](https://git-scm.com)是目前世界上最先进的分布式版本控制系统（没有之一）。这里我们使用git bash 完成安装，初始化，上传等操作。
++ [Git](https://git-scm.com)是目前世界上最先进的分布式版本控制系统（没有之一）。对项目的备份，部署等等都大有用处。
++ [linux](https://www.runoob.com/linux/linux-tutorial.html)是一种自由和开放源码的类 UNIX 操作系统。能支持POSIX的多用户、多任务、支持多线程和多CPU，一般服务器就是都是linux。
++ [Centos](https://baike.baidu.com/item/CentOS/498948?fr=aladdin)是Linux发行版之一，还有如Debin Ubuntu等版本的linux系统可供选择。
+
 
 ## 1.3 涉及内容参考资料
 
@@ -193,3 +196,170 @@ theme: butterfly
 {% asset_img JustOneBlog-2021-04-18-11-49-44.png %}
 
 # 3.拥有一个云服务器
+
+## 3.1 ~~(充钱)~~ 购买云服务器
+
+下面例子讲的是vultr(国外)的服务器，但更推荐国内的[阿里云](https://cn.aliyun.com/)和[腾讯云](https://cloud.tencent.com/)，少走些弯路。
+
+> [学生可以白嫖阿里云三个月！](https://developer.aliyun.com/adc/student/)
+> 详细教程可以百度
+
+{% asset_img JustOneBlog-2021-04-23-02-04-30.png %}
+
+> 这里选择vultr，因为~~我穷~~vultr按小时计费(阿里云，腾讯云按月或者++计费)，能在我经济允许的情况下多开几个服务器
+
+{% asset_img JustOneBlog-2021-04-23-01-52-31.png %}
+
+花钱就不用介绍了，一般充钱最快最容易。
+
+## 3.2 部署云服务器
+
+### 3.2.1 选择云计算
+
+{% asset_img JustOneBlog-2021-04-23-02-06-10.png %}
+
+### 3.2.2 选择服务器地理位置
+
+{% asset_img JustOneBlog-2021-04-23-02-07-07.png %}
+
+> 选择你喜欢的地点
+
+### 3.2.3 选择系统
+
+{% asset_img JustOneBlog-2021-04-23-02-07-53.png %}
+
+> 这里选用64位Centos系统，其他系统也可选择，操作过程中内容大同小异
+
+### 3.2.4 选择服务器性能
+
+{% asset_img JustOneBlog-2021-04-23-02-09-44.png %}
+
+> 这里不建议选用只有IPv6的，选择$3.5/mo的套餐
+
+### 3.2.5 成功部署
+
+其他配置均不需要更改，如果点击右下角`(Deploy Now)`部署
+
+{% asset_img JustOneBlog-2021-04-23-02-16-22.png %}
+
+等待服务器安装完系统后，显示`Runing`即为部署成功
+
+## 3.3 连接至云服务器
+
+> TODO:串讲端口，IP，域名，常见端口，代理
+
+### 3.3.1 提前准备
+
++ 端口 : TCP/IP协议，一个应用跑在一个端口上
+    + [各种服务常用端口号](https://blog.csdn.net/zhanghuiyu01/article/details/80830045)
++ IP  : 网际互连协议。路由器在互联网下有唯一IP(公网)，联网设备在路由器下也有IP(局域网)
+    + [干货：计算机网络中那些常见的IP地址]()
+    + 127.0.0.1 : 本地地址 (仅对本机有效)
+    + 192.168.x.x : 私有地址，设备在路由器下被分配的地址，可以通过此地址来经行分享文件，发送网络请求等操作。
++ 域名 : 通过DNS服务器解析出IP地址，再连接到此IP地址。
+    + localhost : 本地地址 (`C:\Windows\System32\drivers\etc`下的hosts文件解析出的)
++ ssh : 安全外壳协议。通过xshell等工具用ssh协议连接上云服务器。
++ [FinalShell](https://www.hostbuf.com/t/988.html)<font color="red">(推荐)</font>: 强大的连接服务器的工具。
+
+### 3.3.2 查看服务器的信息
+
+打开vultr(阿里云/腾讯云)控制台，点击自己的服务器查看信息
+
+{% asset_img JustOneBlog-2021-04-23-03-11-28.png %}
+
+需要留意的是 <font color="red">IP 用户名(Username) 密码(Password)</font>
+
+> linux会有一个`root`(超级管理员)账号，也注册有其他不同权限的账号
+
+### 3.3.3 使用FinalShell连接服务器
+
+打开FinalShell，打开连接设置，选择SSH
+
+{% asset_img JustOneBlog-2021-04-23-03-23-32.png %}
+
+填入喜欢的名称，填入IP,用户名,密码，<font color="red">勾选上智能加速</font>。
+
+随后双击自己的服务器，连接服务器
+
+{% asset_img JustOneBlog-2021-04-23-03-28-29.png %}
+
+# 4.部署个人博客至服务器中
+
+参考文章: [将Hexo部署到自己的服务器上](https://www.cnblogs.com/jie-fang/p/13445939.html)
+## 4.1 提前准备
+
++ [nginx](https://www.runoob.com/w3cnote/nginx-setup-intro.html)：高性能的HTTP和反向代理web服务器。
++ [Git](https://git-scm.com)：这里使用Git来将服务器部署到服务器中
++ SSH密钥：是一种无须密码登录Linux实例的认证方式。
+
+## 4.2 安装需要的环境
+
+安装git
+> sudo yum -y install git
+安装nginx
+> sudo yum -y install nginx 
+
+## 4.3 添加git用户
+
+> useradd git 
+> passwd  git
+> 
+> #给git用户配置sudo权限
+> chmod 740 /etc/sudoers
+> vim /etc/sudoers
+> 
+> #找到root ALL=(ALL) ALL，在它下方加入一行
+> git ALL=(ALL) ALL
+> 
+> chmod 400 /etc/sudoers
+
+## 4.4 给git用户添加ssh密钥
+
+> su - git
+> mkdir -p ~/.ssh
+> touch ~/.ssh/authorized_keys
+> chmod 600 ~/.ssh/authorzied_keys
+> chmod 700 ~/.ssh
+> vim ~/.ssh/authorized_keys    #将ssh密钥粘贴进去
+
+## 4.5 创建git仓库
+
+> #新建目录，这是git仓库的位置
+> sudo mkdir -p /var/repo    
+> sudo mkdir -p /var/www/hexo
+>
+> #转到git仓库的文件夹
+> cd /var/repo  
+> 
+> #创建一个名叫blog的仓库
+> sudo git init --bare blog.git 
+> sudo vim /var/repo/blog.git/hooks/post-update
+
+编辑`post-update`文件内容如下：
+> #!/bin/bash
+> git --work-tree=/var/www/hexo --git-dir=/var/repo/blog.git checkout -f
+
+给post-update授权:
+> cd /var/repo/blog.git/hooks/
+> sudo chown -R git:git /var/repo/
+> sudo chown -R git:git /var/www/hexo
+> sudo chmod +x post-update  #赋予其可执行权限
+
+## 4.6 配置Nginx
+
+> cd /etc/nginx/conf.d/
+> vim blog.conf
+
+`blog.conf`的内容如下:
+``` conf
+server {
+    listen    80 default_server;
+    listen    [::] default_server;
+    server_name    207.148.18.185;
+    root    /var/www/hexo
+}
+```
+
+## 4.7 本地一键部署到服务器
+
+> hexo d

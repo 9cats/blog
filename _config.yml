@@ -110,5 +110,5 @@ aplayer:
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@112.74.54.201:/var/repo/hexo.git
+  repo: git@github.com:9cats/Blog_dev.git
   branch: master

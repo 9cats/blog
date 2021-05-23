@@ -318,21 +318,25 @@ theme: butterfly
 > su - git
 > mkdir -p ~/.ssh
 > touch ~/.ssh/authorized_keys
-> chmod 600 ~/.ssh/authorzied_keys
-> chmod 700 ~/.ssh
 > vim ~/.ssh/authorized_keys    #将ssh密钥粘贴进去
+>
+> chmod 600 /home/git/.ssh/authorized_keys #赋予权限
+> chmod 700 ~/.ssh
 
 ## 4.5 创建git仓库
 
 > #新建目录，这是git仓库的位置
 > sudo mkdir -p /var/repo    
-> sudo mkdir -p /var/www/hexo
->
+> sudo mkdir -p /var/hexo
+> #赋予权限
+> chown -R git:git /var/repo/
+> chown -R git:git /var/hexo/
+> chmod -R 755 /var/hexo
 > #转到git仓库的文件夹
 > cd /var/repo  
 > 
 > #创建一个名叫blog的仓库
-> sudo git init --bare blog.git 
+> sudo git init --bare blog.git (bare前面有两个'-')
 > sudo vim /var/repo/blog.git/hooks/post-update
 
 编辑`post-update`文件内容如下：
@@ -340,10 +344,8 @@ theme: butterfly
 > git --work-tree=/var/www/hexo --git-dir=/var/repo/blog.git checkout -f
 
 给post-update授权:
-> cd /var/repo/blog.git/hooks/
-> sudo chown -R git:git /var/repo/
-> sudo chown -R git:git /var/www/hexo
-> sudo chmod +x post-update  #赋予其可执行权限
+> chown -R git:git /var/repo/hexo.git/hooks/post-receive
+> chmod +x /var/repo/hexo.git/hooks/post-receive  #赋予其可执行权限
 
 ## 4.6 配置Nginx
 
@@ -353,13 +355,25 @@ theme: butterfly
 `blog.conf`的内容如下:
 ``` conf
 server {
-    listen    80 default_server;
-    listen    [::] default_server;
-    server_name    207.148.18.185;
-    root    /var/www/hexo
+	listen  80;
+	root /var/hexo;
+	server_name 112.74.54.201;
+    index index.php index.html index.htm default.php default.htm default.html;
+	location /{
+	}
 }
 ```
+填写完成后保存退出，并重新启动nginx
+> sudo service nginx restart
+> sudo nginx -s reload -t
+> sudo nginx -s reload
 
 ## 4.7 本地一键部署到服务器
 
+打开本地博客工作区，打开`_config.yml`并配置deploy选项。
+
+{% asset_img JustOneBlog-2021-04-24-01-18-37.png %}
+
 > hexo d
+
+# 5 蛇尾
